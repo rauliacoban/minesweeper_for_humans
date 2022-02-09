@@ -6,18 +6,15 @@ import ctypes
 
 
 class Cell:
-    all = []
-    started = False
-    is_game_over = False
 
-    def __init__(self, x, y, ismine=False):
-        self.ismine = ismine
+    def __init__(self, x, y, game):
+        self.ismine = False
         self.value = 0
         self.button = None
         self.coords = (x, y)
         self.flagged = False
         self.covered = True
-        Cell.all.append(self)
+        self.game=game
 
     def create_button(self, location):
         button = Button(location,
@@ -43,16 +40,16 @@ class Cell:
                     neighbor.left_click(False)
 
     def left_click(self, event):
-        if Cell.is_game_over or self.flagged:
+        if self.game.is_game_over or self.flagged:
             return
 
-        if not Cell.started:
-            Cell.randomize(self)
-            Cell.started = True
+        if not self.game.started:
+            self.game.randomize(self)
+            self.game.started = True
 
         if (self.ismine):
             self.button.config(bg='magenta', text='!')
-            Cell.game_over()
+            self.game.game_over()
             return
         self.setText()
 
@@ -60,7 +57,7 @@ class Cell:
             self.covered = False
             self.uncover_neighbors()
         if self.covered:
-            self.covered = False
+             self.covered = False
 
 
     def right_click(self, event):
@@ -77,6 +74,7 @@ class Cell:
         if self.ismine:
             self.button.config(text='!', bg='white')
         else:
+            print(self.value)
             self.button.config(text=f'{number_coding[self.value]}', fg=f'{color_coding[self.value]}', bg='white')
 
     def get_neighbors(self):
@@ -84,42 +82,6 @@ class Cell:
         for direction in settings.directions:
             coords = add_coords(self.coords, direction)
             if valid(coords):
-                neighbors.append(Cell.get_cell(coords))
+                neighbors.append(self.game.get_cell(coords))
+                #print(f'what get_neighbors receives:{neighbors[-1].coords}')
         return neighbors
-
-    @staticmethod
-    def randomize(start):
-        mines = [start]
-        while start in mines:
-            mines = random.sample(Cell.all, MINES)
-
-        for cell in mines:
-            for neighbor in cell.get_neighbors():
-                if neighbor is start:
-                    Cell.randomize(start)
-                    return
-
-        for cell in mines:
-            cell.ismine = True
-            for neighbor in cell.get_neighbors():
-                if not neighbor.ismine:
-                    neighbor.value += 1
-
-    @staticmethod
-    def get_cell(coords):
-        for cell in Cell.all:
-            if cell.coords == coords:
-                return cell
-
-    @staticmethod
-    def game_over():
-        print('Game over!')
-        ctypes.windll.user32.MessageBoxW(0, 'Clicked on a mine!', 'Game Over', 0)
-        for cell in Cell.all:
-            if cell.covered:
-                if cell.ismine:
-                    cell.button.config(text='!')
-                else:
-                    cell.button.config(text=f'{number_coding[cell.value]}')
-            cell.button.unbind('<Button-1>')
-            cell.button.unbind('<Button-3>')

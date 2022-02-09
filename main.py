@@ -1,13 +1,13 @@
 from tkinter import *
 from settings import *
 from cell import *
+from game import *
 
 root = Tk()
 root.geometry(f'{WIDTH}x{HEIGHT}')
 root.title('Minesweeper')
 root.resizable(False, False)
 root.configure(bg='black')
-
 
 top_frame = Frame(root,
                   bg='black',
@@ -27,11 +27,15 @@ center_frame = Frame(root,
                      height=HEIGHT - HEIGHT*TOP_RATIO)
 center_frame.place(x=WIDTH*LEFT_RATIO, y=HEIGHT*TOP_RATIO)
 
+def reset(event):
+    print('MERRYDO')
+    game = Game(center_frame, MINES)
 
-for x in range(CELL_HEIGHT):
-    for y in range(CELL_WIDTH):
-        c = Cell(x, y)
-        c.create_button(center_frame)
-        c.button.grid(row=x, column=y)
+restart_btn = Button(text='restart', bg='yellow')
+restart_btn.place(x=WIDTH/2, y=50)
+restart_btn.bind('<Button-1>', reset)
 
+reset(0)
 root.mainloop()
+
+
