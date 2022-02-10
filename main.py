@@ -1,6 +1,4 @@
 from tkinter import *
-from settings import *
-from cell import *
 from game import *
 
 root = Tk()
@@ -27,14 +25,24 @@ center_frame = Frame(root,
                      height=HEIGHT - HEIGHT*TOP_RATIO)
 center_frame.place(x=WIDTH*LEFT_RATIO, y=HEIGHT*TOP_RATIO)
 
-
 def reset(event):
-    game = Game(center_frame, MINES)
-
+    game = Game(center_frame, mines_label, MINES)
 
 restart_btn = Button(text='restart', bg='yellow')
 restart_btn.place(x=WIDTH/2, y=50)
 restart_btn.bind('<Button-1>', reset)
+
+mines_label = Label(root,
+                   bg='white',
+                   width=5,
+                   height=1)
+mines_label.place(x=WIDTH/2 + 50, y=50)
+
+
+
+
+
+
 
 reset(0)
 root.mainloop()

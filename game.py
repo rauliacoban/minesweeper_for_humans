@@ -1,12 +1,15 @@
 from cell import *
 import random
 import ctypes
+from tkinter import *
 
 
 class Game:
-    def __init__(self, location, n_mines):
-        self.location = location
+    def __init__(self, board_frame, mines_label, n_mines):
+        self.board_frame = board_frame
+        self.mines_label = mines_label
         self.n_mines = n_mines
+        self.remaining_mines = n_mines
         self.cells = []
         self.started = False
         self.is_game_over = False
@@ -14,9 +17,15 @@ class Game:
         for x in range(CELL_HEIGHT):
             for y in range(CELL_WIDTH):
                 c = Cell(x, y, self)
-                c.create_button(location)
+                c.create_button(board_frame)
                 c.button.grid(row=x, column=y)
                 self.cells.append(c)
+
+        self.update_mine_display(0)
+
+    def update_mine_display(self, increment):
+        self.remaining_mines += increment
+        self.mines_label.config(text=f'{self.remaining_mines}')
 
     def get_cell(self, coords):
         for cell in self.cells:

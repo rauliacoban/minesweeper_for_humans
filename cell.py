@@ -19,8 +19,7 @@ class Cell:
                         width=3,
                         height=1,
                         bg='grey',
-                        font='sans 9 bold'
-                        )
+                        font='sans 9 bold')
         button.bind('<Button-1>', self.left_click)
         button.bind('<Button-3>', self.right_click)
         self.button = button
@@ -62,8 +61,10 @@ class Cell:
 
         if self.flagged:
             self.button.config(bg='grey')
+            self.game.update_mine_display(1)
         else:
             self.button.config(bg='black')
+            self.game.update_mine_display(-1)
         self.flagged = not self.flagged
 
     def set_text(self):
