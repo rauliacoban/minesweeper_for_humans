@@ -27,9 +27,10 @@ center_frame = Frame(root,
                      height=HEIGHT - HEIGHT*TOP_RATIO)
 center_frame.place(x=WIDTH*LEFT_RATIO, y=HEIGHT*TOP_RATIO)
 
+
 def reset(event):
-    print('MERRYDO')
     game = Game(center_frame, MINES)
+
 
 restart_btn = Button(text='restart', bg='yellow')
 restart_btn.place(x=WIDTH/2, y=50)
@@ -37,5 +38,3 @@ restart_btn.bind('<Button-1>', reset)
 
 reset(0)
 root.mainloop()
-
-

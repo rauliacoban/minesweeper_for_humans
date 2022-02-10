@@ -3,8 +3,8 @@ HEIGHT = 600
 TOP_RATIO = 0.15
 LEFT_RATIO = 0.15
 
-CELL_WIDTH = 30
-CELL_HEIGHT = 15
+CELL_WIDTH = 31
+CELL_HEIGHT = 16
 MINES = 99
 
 directions = ((-1, -1), (-1, 0), (-1, 1), (0, 1),

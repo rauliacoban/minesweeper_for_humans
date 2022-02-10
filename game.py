@@ -1,5 +1,7 @@
 from cell import *
-#Game(location='center_frame', n_mines=MINES)
+import random
+import ctypes
+
 
 class Game:
     def __init__(self, location, n_mines):
@@ -19,10 +21,10 @@ class Game:
     def get_cell(self, coords):
         for cell in self.cells:
             if cell.coords == coords:
-                #print(f'what get_cell sends:{cell.coords}')
                 return cell
 
     def game_over(self):
+        self.is_game_over = True
         print('Game over!')
         ctypes.windll.user32.MessageBoxW(0, 'Clicked on a mine!', 'Game Over', 0)
         for cell in self.cells:
@@ -31,8 +33,6 @@ class Game:
                     cell.button.config(text='!')
                 else:
                     cell.button.config(text=f'{number_coding[cell.value]}')
-            cell.button.unbind('<Button-1>')
-            cell.button.unbind('<Button-3>')
 
     def randomize(self, start):
         valid_distribution = False
@@ -44,9 +44,12 @@ class Game:
             while start in mines:
                 mines = random.sample(self.cells, self.n_mines)
 
-            for cell in mines:
-                for neighbor in cell.get_neighbors():
-                    if neighbor is start:
+            for neighbor in start.get_neighbors():
+                if neighbor in mines:
+                    valid_distribution = False
+                    break
+                for far_neighbor in neighbor.get_neighbors():
+                    if far_neighbor in mines:
                         valid_distribution = False
 
         for cell in mines:
