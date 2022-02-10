@@ -25,18 +25,26 @@ center_frame = Frame(root,
                      height=HEIGHT - HEIGHT*TOP_RATIO)
 center_frame.place(x=WIDTH*LEFT_RATIO, y=HEIGHT*TOP_RATIO)
 
+mines_label = Label(root,
+                   bg='red',
+                   width=5,
+                   height=1)
+mines_label.place(x=WIDTH/2 + 50, y=50)
+
+cells_label = Label(root,
+                   bg='blue',
+                   width=5,
+                   height=1)
+cells_label.place(x=WIDTH/2 - 50, y=50)
+
 def reset(event):
-    game = Game(center_frame, mines_label, MINES)
+    game = Game(center_frame, mines_label, cells_label)
 
 restart_btn = Button(text='restart', bg='yellow')
 restart_btn.place(x=WIDTH/2, y=50)
 restart_btn.bind('<Button-1>', reset)
 
-mines_label = Label(root,
-                   bg='white',
-                   width=5,
-                   height=1)
-mines_label.place(x=WIDTH/2 + 50, y=50)
+
 
 
 

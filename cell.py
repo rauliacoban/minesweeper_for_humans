@@ -49,11 +49,16 @@ class Cell:
             return
         self.set_text()
 
+        if self.covered:
+            self.game.update_cells_display(-1)
+
         if (self.covered and self.value == 0) or (not self.covered and event):
             self.covered = False
             self.uncover_neighbors()
-        if self.covered:
-            self.covered = False
+
+        self.covered = False
+
+
 
     def right_click(self, event):
         if not self.covered or self.game.is_game_over:
